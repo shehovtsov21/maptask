@@ -1,0 +1,114 @@
+#include <iostream>
+#include <map>
+#include <string>
+using namespace std;
+
+class PhoneBook {
+    map<string, string> contacts;
+
+public:
+    void addContact(string name, string phone) {
+        contacts[name] = phone;
+    }
+
+    void findContact(string name) const {
+        auto it = contacts.find(name);
+        if (it != contacts.end())
+            cout << it->first << ": " << it->second << endl;
+        else
+            cout << "Contact not found" << endl;
+    }
+
+    void showAll() const {
+        for (const auto& contact : contacts)
+            cout << contact.first << ": " << contact.second << endl;
+    }
+};
+
+class Student {
+    string name;
+    double averageGrade;
+
+public:
+    Student(string name = "", double averageGrade = 0) {
+        this->name = name;
+        this->averageGrade = averageGrade;
+    }
+
+    void show() const {
+        cout << name << ", average grade: " << averageGrade << endl;
+    }
+};
+
+class Dictionary {
+    map<string, string> words;
+
+public:
+    void addWord(string word, string translation) {
+        words[word] = translation;
+    }
+
+    void findTranslation(string word) const {
+        auto it = words.find(word);
+        if (it != words.end())
+            cout << it->first << " - " << it->second << endl;
+        else
+            cout << "Word not found" << endl;
+    }
+
+    void removeWord(string word) {
+        if (words.erase(word) > 0)
+            cout << "Word deleted" << endl;
+        else
+            cout << "Word not found" << endl;
+    }
+
+    void showAll() const {
+        for (const auto& word : words)
+            cout << word.first << " - " << word.second << endl;
+    }
+};
+
+int main() {
+    cout << "1. Phone book" << endl;
+    PhoneBook book;
+    book.addContact("Anna", "+380501234567");
+    book.addContact("Ivan", "+380671234567");
+    book.showAll();
+    cout << "Search for Anna:" << endl;
+    book.findContact("Anna");
+    book.findContact("Oleg");
+
+    cout << "\n2. Students" << endl;
+    map<int, Student> students;
+    students[1001] = Student("Vlad", 90.5);
+    students[1002] = Student("Anna", 95);
+
+    for (const auto& student : students) {
+        cout << "Record number: " << student.first << ", ";
+        student.second.show();
+    }
+
+    int number = 1001;
+    cout << "Search for record number " << number << ":" << endl;
+    auto it = students.find(number);
+    if (it != students.end())
+        it->second.show();
+    else
+        cout << "Student not found" << endl;
+
+    cout << "\n3. Dictionary" << endl;
+    Dictionary dictionary;
+    dictionary.addWord("cat", "kot");
+    dictionary.addWord("dog", "sobaka");
+    dictionary.addWord("book", "kniga");
+    dictionary.showAll();
+    cout << "Search for cat:" << endl;
+    dictionary.findTranslation("cat");
+    dictionary.findTranslation("sun");
+    dictionary.removeWord("dog");
+    cout << "Dictionary after deletion:" << endl;
+    dictionary.showAll();
+
+    return 0;
+}
